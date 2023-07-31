@@ -1,5 +1,6 @@
 import { createAndAppendSection } from './join-us-section.js';
 import { validate } from './email-validator.js';
+import '../styles/style.css';
 
 /*
 const standardProgram = new Program(programConfig.standard.title, programConfig.standard.subtitle, programConfig.standard.buttonText);
