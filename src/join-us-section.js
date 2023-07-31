@@ -56,6 +56,7 @@
 // });
 // }
 
+/*
 export function createJoinSection(){
     class StandardProgram {
         constructor() {
@@ -147,3 +148,82 @@ export function createJoinSection(){
     // standardSection.remove();
     advancedSection.remove();
 }
+*/
+
+
+export class Program {
+  constructor(title, subtitle, buttonText) {
+    this.title = title;
+    this.subtitle = subtitle;
+    this.buttonText = buttonText;
+  }
+
+  createSection() {
+    const joinProgramSection = document.createElement("section");
+    joinProgramSection.className = "app-section app-section--image-join";
+
+    const sectionTitle = document.createElement("h2");
+    sectionTitle.className = "app-title";
+    sectionTitle.textContent = this.title;
+
+    const sectionSubtitle = document.createElement("h3");
+    sectionSubtitle.className = "app-subtitle";
+    sectionSubtitle.innerHTML = this.subtitle;
+
+    const subscribeForm = document.createElement("form");
+    subscribeForm.className = "subscribe__form";
+
+    const inputFieldDiv = document.createElement("div");
+    inputFieldDiv.className = "subscribe__form--input-field";
+
+    const emailLabel = document.createElement("label");
+    emailLabel.setAttribute("for", "email");
+
+    const emailInput = document.createElement("input");
+    emailInput.id = "email";
+    emailInput.className = "input-field";
+    emailInput.name = "email";
+    emailInput.type = "email";
+    emailInput.placeholder = "Email";
+
+    const subscribeButton = document.createElement("button");
+    subscribeButton.className = "form__btn";
+    subscribeButton.textContent = this.buttonText;
+
+    inputFieldDiv.appendChild(emailLabel);
+    inputFieldDiv.appendChild(emailInput);
+    subscribeForm.appendChild(inputFieldDiv);
+    subscribeForm.appendChild(subscribeButton);
+    joinProgramSection.appendChild(sectionTitle);
+    joinProgramSection.appendChild(sectionSubtitle);
+    joinProgramSection.appendChild(subscribeForm);
+
+    return joinProgramSection;
+  }
+}
+
+
+export const programConfig = {
+  standard: {
+    title: "Join Our Program",
+    subtitle: "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
+    buttonText: "SUBSCRIBE",
+  },
+  advanced: {
+    title: "Join Our Advanced Program",
+    subtitle: "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
+    buttonText: "Subscribe to Advanced Program",
+  },
+};
+
+export function createAndAppendSection(programType) {
+  const programInfo = programConfig[programType];
+  if (!programInfo) {
+    throw new Error("Invalid program type.");
+  }
+
+  const program = new Program(programInfo.title, programInfo.subtitle, programInfo.buttonText);
+  const programSection = program.createSection();
+  document.getElementById("events-task").appendChild(programSection);
+}
+
