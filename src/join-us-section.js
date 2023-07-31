@@ -151,7 +151,7 @@ export function createJoinSection(){
 */
 
 
-export class Program {
+class Program {
   constructor(title, subtitle, buttonText) {
     this.title = title;
     this.subtitle = subtitle;
@@ -203,7 +203,7 @@ export class Program {
 }
 
 
-export const programConfig = {
+const programConfig = {
   standard: {
     title: "Join Our Program",
     subtitle: "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
@@ -226,4 +226,3 @@ export function createAndAppendSection(programType) {
   const programSection = program.createSection();
   document.getElementById("events-task").appendChild(programSection);
 }
-

@@ -1,7 +1,7 @@
+import { createAndAppendSection } from './join-us-section.js';
+import { validate } from './email-validator.js';
 
-import { Program, programConfig, createAndAppendSection } from './join-us-section.js';
-
-
+/*
 const standardProgram = new Program(programConfig.standard.title, programConfig.standard.subtitle, programConfig.standard.buttonText);
 const standardSection = standardProgram.createSection();
 document.getElementById("events-task").appendChild(standardSection);
@@ -14,3 +14,26 @@ document.getElementById("events-task").appendChild(advancedSection);
 if (advancedSection) {
   advancedSection.remove();
 }
+*/
+
+createAndAppendSection("standard");
+// createAndAppendSection("advanced");
+
+function validateEmail(event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const isValid = validate(email);
+
+    if (isValid) {
+        alert('Email is valid!');
+    } else {
+        alert('Email is invalid. Please enter a valid email address.');
+    }
+}
+
+const subscribeButton = document.querySelector('.form__btn');
+subscribeButton.addEventListener('click', validateEmail);
+
+
+
+
