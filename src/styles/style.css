@@ -309,7 +309,7 @@ main {
       rgba(65, 65, 65, 0.4),
       rgba(65, 65, 65, 0.4)
     ),
-    url(../assets/images/f01f8e3c13b187fbf8d4675da7012bc6.jpeg) no-repeat
+    url("../assets/images/f01f8e3c13b187fbf8d4675da7012bc6.jpeg") no-repeat
       top/cover;
   height: 500px;
   max-width: 100%;

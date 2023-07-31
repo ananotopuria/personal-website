@@ -1,6 +1,6 @@
 // export function createJoinSection () {
 //     document.addEventListener("DOMContentLoaded", function() {
-    
+
 //     const joinProgramSection = document.createElement("section");
 //     joinProgramSection.className = "app-section app-section--image-join";
 
@@ -150,7 +150,6 @@ export function createJoinSection(){
 }
 */
 
-
 class Program {
   constructor(title, subtitle, buttonText) {
     this.title = title;
@@ -202,27 +201,34 @@ class Program {
   }
 }
 
-
 const programConfig = {
   standard: {
     title: "Join Our Program",
-    subtitle: "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
+    subtitle:
+      "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
     buttonText: "SUBSCRIBE",
   },
   advanced: {
     title: "Join Our Advanced Program",
-    subtitle: "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
+    subtitle:
+      "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.",
     buttonText: "Subscribe to Advanced Program",
   },
 };
 
 export function createAndAppendSection(programType) {
+  // eslint-disable-next-line no-console
+  console.log(programType);
   const programInfo = programConfig[programType];
   if (!programInfo) {
     throw new Error("Invalid program type.");
   }
 
-  const program = new Program(programInfo.title, programInfo.subtitle, programInfo.buttonText);
+  const program = new Program(
+    programInfo.title,
+    programInfo.subtitle,
+    programInfo.buttonText
+  );
   const programSection = program.createSection();
   document.getElementById("events-task").appendChild(programSection);
 }
