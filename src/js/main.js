@@ -32,27 +32,27 @@ createAndAppendSection("standard");
 //   }
 // }
 
-const subscribeButton = document.querySelector(".form__btn");
-subscribeButton.addEventListener("click", validateEmail);
+// const subscribeButton = document.querySelector(".form__btn");
+// subscribeButton.addEventListener("click", validateEmail);
 
-function saveEmailToLocalStorage(email) {
-  localStorage.setItem("subscriptionEmail", email);
-}
-function loadEmailFromLocalStorage() {
-  const savedEmail = localStorage.getItem("subscriptionEmail");
-  if (savedEmail) {
-    document.getElementById("email").value = savedEmail;
-  }
-}
-function handleInputChange(event) {
-  const email = event.target.value;
-  saveEmailToLocalStorage(email);
-}
+// function saveEmailToLocalStorage(email) {
+//   localStorage.setItem("subscriptionEmail", email);
+// }
+// function loadEmailFromLocalStorage() {
+//   const savedEmail = localStorage.getItem("subscriptionEmail");
+//   if (savedEmail) {
+//     document.getElementById("email").value = savedEmail;
+//   }
+// }
+// function handleInputChange(event) {
+//   const email = event.target.value;
+//   saveEmailToLocalStorage(email);
+// }
 
-const emailInput = document.getElementById("email");
-emailInput.addEventListener("input", handleInputChange);
+// const emailInput = document.getElementById("email");
+// emailInput.addEventListener("input", handleInputChange);
 
-window.addEventListener("load", loadEmailFromLocalStorage);
+// window.addEventListener("load", loadEmailFromLocalStorage);
 
 // unsubscribe
 
@@ -71,3 +71,60 @@ window.addEventListener("load", loadEmailFromLocalStorage);
 //     joinSection.style.justifyContent = "flex-start";
 //   }
 // }
+
+function saveEmailAndSubscriptionStatus(email, isSubscribed) {
+  localStorage.setItem("subscriptionEmail", email);
+  localStorage.setItem("isSubscribed", isSubscribed);
+}
+
+function loadEmailAndSubscriptionStatus() {
+  const savedEmail = localStorage.getItem("subscriptionEmail");
+  const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+
+  if (savedEmail) {
+    document.getElementById("email").value = savedEmail;
+  }
+
+  updateSubscriptionUI(isSubscribed);
+}
+
+function updateSubscriptionUI(isSubscribed) {
+  const emailInput = document.getElementById("email");
+  const subscribeButton = document.querySelector(".form__btn");
+  const joinSection = document.getElementById("joinSection");
+
+  if (isSubscribed) {
+    emailInput.style.display = "none";
+    subscribeButton.textContent = "Unsubscribe";
+    joinSection.style.justifyContent = "center";
+  } else {
+    emailInput.style.display = "block";
+    subscribeButton.textContent = "Subscribe";
+    joinSection.style.justifyContent = "flex-start";
+  }
+}
+
+function handleInputChange(event) {
+  const email = event.target.value;
+  saveEmailAndSubscriptionStatus(email, false);
+}
+
+const emailInput = document.getElementById("email");
+emailInput.addEventListener("input", handleInputChange);
+
+function handleSubscriptionClick(event) {
+  event.preventDefault();
+  const email = document.getElementById("email").value;
+  const isValid = validate(email);
+
+  if (isValid) {
+    const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+    saveEmailAndSubscriptionStatus(email, !isSubscribed);
+    loadEmailAndSubscriptionStatus(); // To update UI immediately after changing subscription status
+  }
+}
+
+const subscribeButton = document.querySelector(".form__btn");
+subscribeButton.addEventListener("click", handleSubscriptionClick);
+
+window.addEventListener("load", loadEmailAndSubscriptionStatus);
