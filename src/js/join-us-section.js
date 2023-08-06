@@ -1,155 +1,4 @@
-// export function createJoinSection () {
-//     document.addEventListener("DOMContentLoaded", function() {
-
-//     const joinProgramSection = document.createElement("section");
-//     joinProgramSection.className = "app-section app-section--image-join";
-
-//     const sectionTitle = document.createElement("h2");
-//     sectionTitle.className = "app-title";
-//     sectionTitle.textContent = "Join Our Program";
-
-//     const sectionSubtitle = document.createElement("h3");
-//     sectionSubtitle.className = "app-subtitle";
-//     sectionSubtitle.innerHTML = "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.";
-
-//     const subscribeForm = document.createElement("form");
-//     subscribeForm.className = "subscribe__form";
-
-//     const inputFieldDiv = document.createElement("div");
-//     inputFieldDiv.className = "subscribe__form--input-field";
-
-//     const emailLabel = document.createElement("label");
-//     emailLabel.setAttribute("for", "email");
-
-//     const emailInput = document.createElement("input");
-//     emailInput.id = "email";
-//     emailInput.className = "input-field";
-//     emailInput.name = "email";
-//     emailInput.type = "email";
-//     emailInput.placeholder = "Email";
-
-//     const subscribeButton = document.createElement("button");
-//     subscribeButton.className = "form__btn";
-//     subscribeButton.textContent = "SUBSCRIBE";
-
-//     inputFieldDiv.appendChild(emailLabel);
-//     inputFieldDiv.appendChild(emailInput);
-//     subscribeForm.appendChild(inputFieldDiv);
-//     subscribeForm.appendChild(subscribeButton);
-//     joinProgramSection.appendChild(sectionTitle);
-//     joinProgramSection.appendChild(sectionSubtitle);
-//     joinProgramSection.appendChild(subscribeForm);
-
-//     const eventsTaskContainer = document.getElementById("events-task");
-
-//     eventsTaskContainer.appendChild(joinProgramSection);
-
-//     joinProgramSection.className = "app-section app-section--image-join";
-//     eventsTaskContainer.appendChild(joinProgramSection);
-//     // const subscribeForm = document.querySelector(".subscribe__form");
-//     // const emailInput = document.getElementById("email");
-//     subscribeForm.addEventListener("submit", function(event) {
-//         event.preventDefault();
-//         const emailValue = emailInput.value;
-//         console.log("Entered Email: ", emailValue);
-//     });
-// });
-// }
-
-/*
-export function createJoinSection(){
-    class StandardProgram {
-        constructor() {
-          this.title = "Join Our Program";
-          this.subtitle = "Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.";
-          this.buttonText = "SUBSCRIBE";
-        }
-      
-        createSection() {
-          const joinProgramSection = document.createElement("section");
-          joinProgramSection.className = "app-section app-section--image-join";
-      
-          const sectionTitle = document.createElement("h2");
-          sectionTitle.className = "app-title";
-          sectionTitle.textContent = this.title;
-      
-          const sectionSubtitle = document.createElement("h3");
-          sectionSubtitle.className = "app-subtitle";
-          sectionSubtitle.innerHTML = this.subtitle;
-      
-          const subscribeForm = document.createElement("form");
-          subscribeForm.className = "subscribe__form";
-      
-          const inputFieldDiv = document.createElement("div");
-          inputFieldDiv.className = "subscribe__form--input-field";
-      
-          const emailLabel = document.createElement("label");
-          emailLabel.setAttribute("for", "email");
-      
-          const emailInput = document.createElement("input");
-          emailInput.id = "email";
-          emailInput.className = "input-field";
-          emailInput.name = "email";
-          emailInput.type = "email";
-          emailInput.placeholder = "Email";
-      
-          const subscribeButton = document.createElement("button");
-          subscribeButton.className = "form__btn";
-          subscribeButton.textContent = this.buttonText;
-      
-          inputFieldDiv.appendChild(emailLabel);
-          inputFieldDiv.appendChild(emailInput);
-          subscribeForm.appendChild(inputFieldDiv);
-          subscribeForm.appendChild(subscribeButton);
-          joinProgramSection.appendChild(sectionTitle);
-          joinProgramSection.appendChild(sectionSubtitle);
-          joinProgramSection.appendChild(subscribeForm);
-      
-          return joinProgramSection;
-        }
-      }
-      
-      class AdvancedProgram extends StandardProgram {
-        constructor() {
-          super();
-          this.title = "Join Our Advanced Program";
-          this.buttonText = "Subscribe to Advanced Program";
-        }
-      }
-    
-      class SectionCreator {
-      create(type) {
-        if (type === "standard") {
-          return new StandardProgram();
-        } else if (type === "advanced") {
-          return new AdvancedProgram();
-        } else {
-          throw new Error("Invalid program type.");
-        }
-      }
-    }
-    
-    const sectionCreator = new SectionCreator();
-    
-    // standard program section
-    
-    const standardProgram = sectionCreator.create("standard");
-    const standardSection = standardProgram.createSection();
-    document.getElementById("events-task").appendChild(standardSection);
-    
-    // advanced program section
-    
-    const advancedProgram = sectionCreator.create("advanced");
-    const advancedSection = advancedProgram.createSection();
-    document.getElementById("events-task").appendChild(advancedSection);
-    
-    // removing sections
-    
-    // standardSection.remove();
-    advancedSection.remove();
-}
-*/
-
+import { validate } from "./email-validator.js";
 class Program {
   constructor(title, subtitle, buttonText) {
     this.title = title;
@@ -232,3 +81,74 @@ export function createAndAppendSection(programType) {
   const programSection = program.createSection();
   document.getElementById("events-task").appendChild(programSection);
 }
+
+////////////////////////////////////////////////////////////////////////
+
+function saveEmailAndSubscriptionStatus(email, isSubscribed) {
+  localStorage.setItem("subscriptionEmail", email);
+  localStorage.setItem("isSubscribed", isSubscribed);
+}
+
+function loadEmailAndSubscriptionStatus() {
+  const savedEmail = localStorage.getItem("subscriptionEmail");
+  const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+
+  const emailInput = document.getElementById("email");
+  if (emailInput) {
+    if (savedEmail) {
+      emailInput.value = savedEmail;
+    }
+
+    emailInput.addEventListener("input", handleInputChange);
+  }
+
+  updateSubscriptionUI(isSubscribed);
+}
+
+function updateSubscriptionUI(isSubscribed) {
+  const emailInput = document.getElementById("email");
+  const subscribeButton = document.querySelector(".form__btn");
+
+  if (emailInput && subscribeButton) {
+    if (isSubscribed) {
+      emailInput.style.display = "none";
+      subscribeButton.textContent = "Unsubscribe";
+    } else {
+      emailInput.style.display = "block";
+      subscribeButton.textContent = "Subscribe";
+    }
+  }
+}
+
+function handleInputChange(event) {
+  const email = event.target.value;
+  saveEmailAndSubscriptionStatus(email, false);
+}
+
+function handleSubscriptionClick(event) {
+  event.preventDefault();
+  const email = document.getElementById("email").value;
+  const isValid = validate(email);
+
+  if (isValid) {
+    const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+
+    if (isSubscribed) {
+      localStorage.removeItem("subscriptionEmail");
+      localStorage.removeItem("isSubscribed");
+    } else {
+      saveEmailAndSubscriptionStatus(email, true);
+    }
+
+    loadEmailAndSubscriptionStatus();
+    updateSubscriptionUI(!isSubscribed);
+  }
+}
+
+export {
+  saveEmailAndSubscriptionStatus,
+  loadEmailAndSubscriptionStatus,
+  updateSubscriptionUI,
+  handleInputChange,
+  handleSubscriptionClick,
+};
