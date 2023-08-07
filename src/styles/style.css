@@ -351,3 +351,41 @@ main {
   border-radius: 30px;
   padding: 10px 30px;
 }
+
+.big-com-section {
+  background-color: #fff;
+}
+
+.testimonials-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  width: 80%;
+  margin-top: 40px;
+  gap: 30px;
+}
+.testimonial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  font-weight: bold;
+  color: #464547;
+}
+
+.testimonial-text {
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+}
+
+.testimonial-position {
+  color: #666;
+}
