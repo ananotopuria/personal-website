@@ -134,9 +134,12 @@ function handleSubscriptionClick(event) {
     const isSubscribed = localStorage.getItem("isSubscribed") === "true";
 
     if (isSubscribed) {
+      // send unsubscribe request to /unsubscribe
+      EmailUnsubscribe(email);
       localStorage.removeItem("subscriptionEmail");
       localStorage.removeItem("isSubscribed");
     } else {
+      EmailSubscribe(email);
       saveEmailAndSubscriptionStatus(email, true);
     }
 
@@ -152,3 +155,50 @@ export {
   handleInputChange,
   handleSubscriptionClick,
 };
+
+function EmailUnsubscribe(email) {
+  fetch("http://localhost:3000/unsubscribe", {
+    method: "POST",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((text) => {
+          throw new Error(text.error);
+        });
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => window.alert(error));
+}
+
+function EmailSubscribe(email) {
+  fetch("http://localhost:3000/subscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: email }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((text) => {
+          throw new Error(text.error);
+        });
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => window.alert(error));
+}
+
+// const request = fetch("http://localhost:3000/community");
+// console.log(request);
+
+

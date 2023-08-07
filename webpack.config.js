@@ -6,6 +6,15 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   devServer: {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        secure: false,
+      },
+    },
     static: {
       directory: path.join(__dirname, "dist"),
     },
