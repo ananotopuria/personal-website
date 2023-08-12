@@ -125,26 +125,68 @@ function handleInputChange(event) {
   saveEmailAndSubscriptionStatus(email, false);
 }
 
-function handleSubscriptionClick(event) {
+// function handleSubscriptionClick(event) {
+//   event.preventDefault();
+//   const email = document.getElementById("email").value;
+//   const isValid = validate(email);
+
+//   if (isValid) {
+//     const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+
+//     if (isSubscribed) {
+//       // send unsubscribe request to /unsubscribe
+//       EmailUnsubscribe(email);
+//       localStorage.removeItem("subscriptionEmail");
+//       localStorage.removeItem("isSubscribed");
+//     } else {
+//       EmailSubscribe(email);
+//       saveEmailAndSubscriptionStatus(email, true);
+//     }
+
+//     loadEmailAndSubscriptionStatus();
+//     updateSubscriptionUI(!isSubscribed);
+
+//   }
+// }
+
+async function handleSubscriptionClick(event) {
   event.preventDefault();
-  const email = document.getElementById("email").value;
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value;
   const isValid = validate(email);
 
-  if (isValid) {
-    const isSubscribed = localStorage.getItem("isSubscribed") === "true";
+  if (!isValid) {
+    return;
+  }
 
-    if (isSubscribed) {
-      // send unsubscribe request to /unsubscribe
-      EmailUnsubscribe(email);
-      localStorage.removeItem("subscriptionEmail");
-      localStorage.removeItem("isSubscribed");
-    } else {
-      EmailSubscribe(email);
-      saveEmailAndSubscriptionStatus(email, true);
-    }
+  const isSubscribed = localStorage.getItem("isSubscribed") === "true";
 
-    loadEmailAndSubscriptionStatus();
-    updateSubscriptionUI(!isSubscribed);
+  const subscribeButton = document.querySelector(".form__btn");
+  if (subscribeButton) {
+    subscribeButton.style.opacity = 0.5;
+
+    setTimeout(async () => {
+      subscribeButton.disabled = true;
+
+      try {
+        if (isSubscribed) {
+          await EmailUnsubscribe(email);
+          localStorage.removeItem("subscriptionEmail");
+          localStorage.removeItem("isSubscribed");
+        } else {
+          await EmailSubscribe(email);
+          saveEmailAndSubscriptionStatus(email, true);
+        }
+
+        loadEmailAndSubscriptionStatus();
+        updateSubscriptionUI(!isSubscribed);
+      } catch (error) {
+        window.alert(error);
+      } finally {
+        subscribeButton.disabled = false;
+        subscribeButton.style.opacity = 1;
+      }
+    }, 500);
   }
 }
 
@@ -197,8 +239,3 @@ function EmailSubscribe(email) {
     })
     .catch((error) => window.alert(error));
 }
-
-// const request = fetch("http://localhost:3000/community");
-// console.log(request);
-
-
