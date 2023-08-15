@@ -1,11 +1,21 @@
 import { expect } from "chai";
 import sinon from "sinon";
-import isValid from "../js/email-validator";
+// import isValid from "../js/email-validator";
+// import {
+//   validateAsync,
+//   validateWithThrow,
+//   validateWithLog,
+// } from "../js/email-validator";
+
+// const emailValidator = require('./email-validator');
+
 import {
+  isValid,
   validateAsync,
   validateWithThrow,
   validateWithLog,
-} from "../js/email-validator";
+} from "../js/email-validator.js";
+
 describe("first test", () => {
   it("should return 2", () => {
     expect(2).to.equal(2);

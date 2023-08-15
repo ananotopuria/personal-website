@@ -389,3 +389,7 @@ main {
 .testimonial-position {
   color: #666;
 }
+.testimonial-img {
+  width: 80%;
+  height: 80%;
+}

@@ -23,7 +23,7 @@ const isValid = (email) => {
   }
   return false;
 };
-export default isValid;
+// export default isValid;
 
 // email-validator.js
 
@@ -56,11 +56,11 @@ function validateWithLog(email) {
   return isValid;
 }
 
-// Exporting functions
+export { validate, validateAsync, validateWithThrow, validateWithLog };
+
 // module.exports = {
 //   validate,
 //   validateAsync,
 //   validateWithThrow,
 //   validateWithLog,
 // };
-export { validate, validateAsync, validateWithThrow, validateWithLog };
