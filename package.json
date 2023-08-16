@@ -9,7 +9,7 @@
     "dev": "webpack-dev-server --mode development --open",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint .",
-    "test": "npx mocha \"src/**/*.js\" --recursive --requre @babel/register",
+    "test": "npx mocha \"src/**/*.test.js\" --recursive --require @babel/register --timeout 10000 --exit",
     "coverage": "nyc --reporter-lcov --reporter=text npm run test"
   },
   "author": "Anano",

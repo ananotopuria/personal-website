@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
   <script src="bundle.js" defer="true"></script>
-  <script src="js/website-section.js" defer="true"></script>
 </head>
 
 <body>
@@ -38,7 +37,7 @@
     </div>
   </header>
 
-  <website-section>
+  <website-section class="app-section app-section--image-overlay app-section--image-peak">
     <h2 slot="title">Your Headline<br /> Here</h2>
     <h3 slot="description">Lorem ipsum dolor sit amet, consectetur <br />adipiscing elit sed do eiusmod.</h3>
     <img src="images/your-logo-here.png" alt="Logo icon picture" class="app-logo" />
@@ -69,24 +68,6 @@
       &#9654;
     </button>
     <h3 slot="description">Duis aute irure dolor in <br />reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla</h3>
-  </website-section>
-
-  <website-section>
-    <h2 slot="title">Join Our Program</h2>
-    <h3 slot="description">Sed do eiusmod tempor incididunt <br /> ut labore et dolore magna aliqua.</h3>
-    <form class="subscribe__form">
-      <div class="subscribe__form--input-field">
-        <label for="email"></label>
-        <input
-        id="email"
-        class="input-field"
-        name="email"
-        type="email"
-        placeholder="Email"
-        />
-      </div>
-      <button class="form__btn">SUBSCRIBE</button>
-    </form>
   </website-section>
   
   <div id="events-task"></div>

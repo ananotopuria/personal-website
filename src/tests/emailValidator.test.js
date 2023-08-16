@@ -10,7 +10,7 @@ import sinon from "sinon";
 // const emailValidator = require('./email-validator');
 
 import {
-  isValid,
+  validate,
   validateAsync,
   validateWithThrow,
   validateWithLog,
@@ -23,21 +23,20 @@ describe("first test", () => {
 });
 describe("isValid", () => {
   it("should return true for valid email endings", () => {
-    expect(isValid("example@gmail.com")).to.be.true;
-    expect(isValid("user@outlook.com")).to.be.true;
-    expect(isValid("test@yandex.ru")).to.be.true;
+    expect(validate("example@gmail.com")).to.be.true;
+    expect(validate("user@outlook.com")).to.be.true;
+    expect(validate("test@yandex.ru")).to.be.true;
   });
 
   it("should return false for invalid email endings", () => {
-    expect(isValid("invalid@yahoo.com")).to.be.false;
-    expect(isValid("test@invalid.com")).to.be.false;
-    expect(isValid("example@invalid.net")).to.be.false;
+    expect(validate("invalid@yahoo.com")).to.be.false;
+    expect(validate("test@invalid.com")).to.be.false;
+    expect(validate("example@invalid.net")).to.be.false;
   });
 
-  // it("should be case-insensitive", () => {
-  //   expect(isValid("example@GMAIL.COM")).to.be.true;
-  //   expect(isValid("user@Outlook.com")).to.be.true;
-  // });
+  it("should be case-insensitive", () => {
+    expect(validate("example@GMAIL.COM")).to.be.true;
+  });
 });
 
 describe("validateAsync function", function () {

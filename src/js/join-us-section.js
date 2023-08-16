@@ -125,30 +125,6 @@ function handleInputChange(event) {
   saveEmailAndSubscriptionStatus(email, false);
 }
 
-// function handleSubscriptionClick(event) {
-//   event.preventDefault();
-//   const email = document.getElementById("email").value;
-//   const isValid = validate(email);
-
-//   if (isValid) {
-//     const isSubscribed = localStorage.getItem("isSubscribed") === "true";
-
-//     if (isSubscribed) {
-//       // send unsubscribe request to /unsubscribe
-//       EmailUnsubscribe(email);
-//       localStorage.removeItem("subscriptionEmail");
-//       localStorage.removeItem("isSubscribed");
-//     } else {
-//       EmailSubscribe(email);
-//       saveEmailAndSubscriptionStatus(email, true);
-//     }
-
-//     loadEmailAndSubscriptionStatus();
-//     updateSubscriptionUI(!isSubscribed);
-
-//   }
-// }
-
 async function handleSubscriptionClick(event) {
   event.preventDefault();
   const emailInput = document.getElementById("email");
@@ -160,33 +136,35 @@ async function handleSubscriptionClick(event) {
   }
 
   const isSubscribed = localStorage.getItem("isSubscribed") === "true";
-
+  console.log(isSubscribed, "handleSubscriptionClick");
   const subscribeButton = document.querySelector(".form__btn");
   if (subscribeButton) {
+    ToggleSubscribeButton(false);
+    if (isSubscribed) {
+      await EmailUnsubscribe(email);
+      localStorage.removeItem("subscriptionEmail");
+      localStorage.removeItem("isSubscribed");
+      loadEmailAndSubscriptionStatus();
+    } else {
+      await EmailSubscribe(email);
+    }
+  }
+}
+
+function SubscribedSuccess(email) {
+  saveEmailAndSubscriptionStatus(email, true);
+  loadEmailAndSubscriptionStatus();
+}
+
+function ToggleSubscribeButton(enable) {
+  const subscribeButton = document.querySelector(".form__btn");
+  if (subscribeButton == undefined) return;
+  if (enable) {
+    subscribeButton.disabled = false;
+    subscribeButton.style.opacity = 1;
+  } else {
     subscribeButton.style.opacity = 0.5;
-
-    setTimeout(async () => {
-      subscribeButton.disabled = true;
-
-      try {
-        if (isSubscribed) {
-          await EmailUnsubscribe(email);
-          localStorage.removeItem("subscriptionEmail");
-          localStorage.removeItem("isSubscribed");
-        } else {
-          await EmailSubscribe(email);
-          saveEmailAndSubscriptionStatus(email, true);
-        }
-
-        loadEmailAndSubscriptionStatus();
-        updateSubscriptionUI(!isSubscribed);
-      } catch (error) {
-        window.alert(error);
-      } finally {
-        subscribeButton.disabled = false;
-        subscribeButton.style.opacity = 1;
-      }
-    }, 500);
+    subscribeButton.disabled = true;
   }
 }
 
@@ -199,6 +177,7 @@ export {
 };
 
 function EmailUnsubscribe(email) {
+  ToggleSubscribeButton(false);
   fetch("http://localhost:3000/unsubscribe", {
     method: "POST",
   })
@@ -214,16 +193,20 @@ function EmailUnsubscribe(email) {
     .then((data) => {
       console.log(data);
     })
-    .catch((error) => window.alert(error));
+    .catch((error) => window.alert(error))
+    .finally(() => ToggleSubscribeButton(true));
 }
 
 function EmailSubscribe(email) {
+  ToggleSubscribeButton(false);
   fetch("http://localhost:3000/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: email }),
+    body: JSON.stringify({
+      email: email,
+    }),
   })
     .then((response) => {
       if (!response.ok) {
@@ -231,11 +214,13 @@ function EmailSubscribe(email) {
           throw new Error(text.error);
         });
       } else {
+        SubscribedSuccess(email);
         return response.json();
       }
     })
     .then((data) => {
       console.log(data);
     })
-    .catch((error) => window.alert(error));
+    .catch((error) => window.alert(error))
+    .finally(() => ToggleSubscribeButton(true));
 }

@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const subscribeButton = document.querySelector(".form__btn");
+  console.log("subscribeButton", subscribeButton)
   if (subscribeButton) {
     subscribeButton.addEventListener("click", handleSubscriptionClick);
   }
